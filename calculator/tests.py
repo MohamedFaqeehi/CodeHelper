@@ -1,7 +1,7 @@
 # calculator/tests.py
 
 import unittest
-from CodeHelper.calculator.pkg.calculator import Calculator
+from calculator.pkg.calculator import Calculator
 
 
 class TestCalculator(unittest.TestCase):

@@ -2,11 +2,11 @@ from collections.abc import Callable
 
 from google.genai import types
 
-from CodeHelper.config import WORKING_DIR
-from CodeHelper.functions.get_file_content import get_file_content, schema_get_file_content
-from CodeHelper.functions.get_files_info import get_files_info, schema_get_files_info
-from CodeHelper.functions.run_python_file import run_python_file, schema_run_python_file
-from CodeHelper.functions.write_file import schema_write_file, write_file
+from config import WORKING_DIR
+from functions.get_file_content import get_file_content, schema_get_file_content
+from functions.get_files_info import get_files_info, schema_get_files_info
+from functions.run_python_file import run_python_file, schema_run_python_file
+from functions.write_file import schema_write_file, write_file
 
 available_functions = types.Tool(
     function_declarations=[

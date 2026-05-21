@@ -1,4 +1,4 @@
-from CodeHelper.functions.write_file import write_file
+from functions.write_file import write_file
 
 
 def test() -> None:

@@ -1,8 +1,8 @@
 # calculator/main.py
 
 import sys
-from CodeHelper.calculator.pkg.calculator import Calculator
-from CodeHelper.calculator.pkg.render import format_json_output
+from calculator.pkg.calculator import Calculator
+from calculator.pkg.render import format_json_output
 
 
 def main() -> None:

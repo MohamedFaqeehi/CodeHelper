@@ -8,9 +8,9 @@ from dotenv import load_dotenv
 from google import genai
 from google.genai import types
 
-from CodeHelper.call_function import available_functions, call_function
-from CodeHelper.config import MAX_ITERS
-from CodeHelper.prompts import system_prompt
+from call_function import available_functions, call_function
+from config import MAX_ITERS
+from prompts import system_prompt
 
 
 

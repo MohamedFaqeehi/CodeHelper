@@ -1,4 +1,4 @@
-from CodeHelper.functions.get_file_content import get_file_content
+from functions.get_file_content import get_file_content
 
 
 def test() -> None:
