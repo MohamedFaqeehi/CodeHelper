@@ -20,6 +20,10 @@ def main() -> None:
     parser.add_argument("--verbose", action="store_true", help="Enable verbose output")
     args = parser.parse_args()
 
+    if not args.user_prompt.strip():
+        print("Error: prompt cannot be empty or whitespace only.")
+        sys.exit(1)
+
     load_dotenv()
     api_key = os.environ.get("GEMINI_API_KEY")
     if not api_key:
