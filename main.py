@@ -38,10 +38,8 @@ def main() -> None:
 
     for _ in range(MAX_ITERS):
         try:
-            final_response = generate_content(client, messages, args.verbose)
-            if final_response:
-                print("Final response:")
-                print(final_response)
+            done = generate_content(client, messages, args.verbose)
+            if done:
                 return
         except Exception as e:
             print(f"Error in generate_content: {e}")
@@ -52,7 +50,7 @@ def main() -> None:
 
 def generate_content(
     client: genai.Client, messages: list[types.Content], verbose: bool
-) -> str | None:
+) -> bool:
     response = client.models.generate_content(
         model="gemini-2.5-flash",
         contents=messages,
@@ -72,22 +70,33 @@ def generate_content(
             if candidate.content:
                 messages.append(candidate.content)
 
-    if not response.function_calls:
-        return response.text
+    if response.function_calls:
+        function_responses: list[types.Part] = []
+        for function_call in response.function_calls:
+            result = call_function(function_call, verbose)
+            if (
+                not result.parts
+                or not result.parts[0].function_response
+                or not result.parts[0].function_response.response
+            ):
+                raise RuntimeError(f"Empty function response for {function_call.name}")
+            if verbose:
+                print(f"-> {result.parts[0].function_response.response}")
+            function_responses.append(result.parts[0])
+        messages.append(types.Content(role="user", parts=function_responses))
+        return False
 
-    function_responses: list[types.Part] = []
-    for function_call in response.function_calls:
-        result = call_function(function_call, verbose)
-        if (
-            not result.parts
-            or not result.parts[0].function_response
-            or not result.parts[0].function_response.response
-        ):
-            raise RuntimeError(f"Empty function response for {function_call.name}")
-        if verbose:
-            print(f"-> {result.parts[0].function_response.response}")
-        function_responses.append(result.parts[0])
-
-    messages.append(types.Content(role="user", parts=function_responses))
+    print("Final response:")
+    stream = client.models.generate_content_stream(
+        model="gemini-2.5-flash",
+        contents=messages,
+        config=types.GenerateContentConfig(...),
+    )
+    for chunk in stream:
+        if chunk.text:
+            print(chunk.text, end="", flush=True)
+    print()  
+    return True
+        
 if __name__ == "__main__":
     main()
