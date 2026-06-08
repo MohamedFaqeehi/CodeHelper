@@ -90,7 +90,7 @@ def generate_content(
     stream = client.models.generate_content_stream(
         model="gemini-2.5-flash",
         contents=messages,
-        config=types.GenerateContentConfig(...),
+        config=types.GenerateContentConfig(tools=[available_functions], system_instruction=system_prompt),
     )
     for chunk in stream:
         if chunk.text:
