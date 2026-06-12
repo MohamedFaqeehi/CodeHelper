@@ -87,15 +87,10 @@ def generate_content(
         return False
 
     print("Final response:")
-    stream = client.models.generate_content_stream(
-        model="gemini-2.5-flash",
-        contents=messages,
-        config=types.GenerateContentConfig(tools=[available_functions], system_instruction=system_prompt),
-    )
-    for chunk in stream:
-        if chunk.text:
-            print(chunk.text, end="", flush=True)
-    print()  
+    for part in response.candidates[0].content.parts:
+        if part.text:
+            print(part.text, end="", flush=True)
+    print()
     return True
         
 if __name__ == "__main__":
